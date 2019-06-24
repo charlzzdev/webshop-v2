@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -7,7 +8,7 @@ const Header = () => {
 
   return (
     <header className="h-16 px-8 lg:px-32 xl:px-64 flex justify-between items-center bg-gray-400 shadow-lg">
-      <a href="/" className="text-xl text-gray-900">Webshop</a>
+      <Link to="/" className="text-xl text-gray-900">Webshop</Link>
       {menuIcon}
       <ul className={
         `${menuOpen ?
@@ -16,17 +17,17 @@ const Header = () => {
           "hidden sm:flex"}`
       }>
         <li className="px-4 py-3 text-gray-700 hover:text-gray-900">
-          <a href="/">About</a>
+          <Link to="/about">About</Link>
         </li>
         <li className="px-4 py-3 text-gray-700 hover:text-gray-900">
-          <a href="/">
+          <Link to="/cart">
             Cart <span className="w-6 h-6 ml-2 inline-block bg-teal-400 text-center rounded-full">0</span>
-          </a>
+          </Link>
         </li>
         <li className="px-4 py-3 text-gray-700 hover:text-gray-900">
-          <a href="/">
+          <Link to="/login">
             Login
-          </a>
+          </Link>
         </li>
       </ul>
     </header>
