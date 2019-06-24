@@ -15,7 +15,7 @@ const LandingPage = () => {
   const item = (name, width, src) => {
     return (
       <a
-        href={`#${name}`}
+        href={`/${name.toLowerCase()}`}
         className={`h-1/2 w-${width} flex justify-center items-center`}
         style={{backgroundImage: `url(${src})`, backgroundSize: 'cover'}}
       >
