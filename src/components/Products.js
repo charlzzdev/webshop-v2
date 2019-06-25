@@ -1,18 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import tempData from '../tempData.json';
 
 const Products = ({ match }) => {
   const [sortedItems, setSortedItems] = useState([]);
-  const items = [
-    { id: 1, type: 'accessories', name: 'Screen Protector', description: 'long description', inStock: true, releaseDate: '15 May 2019' },
-    { id: 2, type: 'accessories', name: 'Power Bank', description: 'short description', inStock: false, releaseDate: '04 Feb 2020' },
-    { id: 3, type: 'phones', name: 'Android Phone', description: 'long description', inStock: true, releaseDate: '08 Jun 2019' },
-    { id: 4, type: 'phones', name: 'iOS Phone', description: 'short description', inStock: false, releaseDate: '05 Apr 2019' },
-    { id: 5, type: 'computers', name: 'PC', description: 'long description', inStock: false, releaseDate: '18 Nov 2020' },
-    { id: 6, type: 'computers', name: 'Mac', description: 'short description', inStock: true, releaseDate: '08 Dec 2021' },
-    { id: 7, type: 'consoles', name: 'PlayStation', description: 'long description', inStock: false, releaseDate: '25 Aug 2018' },
-    { id: 8, type: 'consoles', name: 'Xbox', description: 'long description', inStock: true, releaseDate: '03 Jul 2016' }
-  ];
+  const items = tempData;
 
   useEffect(() => {
     if (!match.params.product) {
@@ -36,7 +28,7 @@ const Products = ({ match }) => {
     <div className="flex flex-wrap justify-center mt-20">
       {
         sortedItems.map(product => (
-          <Link to="/" key={product.id} className="max-w-sm m-3 rounded overflow-hidden shadow-lg">
+          <Link to={`/products/view/${product.id}`} key={product.id} className="max-w-sm m-3 rounded overflow-hidden shadow-lg">
             <img className="w-full" src="https://images.unsplash.com/photo-1516387938699-a93567ec168e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1351&q=80" alt="Sunset in the mountains" />
             <div className="px-6 py-4">
               <div className="font-bold text-xl mb-2">{product.name}</div>
