@@ -1,0 +1,11 @@
+.basket{
+  clip-path: polygon(50% 0, 40% 5%, 100% 5%, 100% 100%, 0 100%, 0 5%, 60% 5%);
+  transform: translateX(-75px);
+}
+
+@media(max-width: 640px){
+  .basket{
+    clip-path: polygon(21% 0, 31% 5%, 100% 5%, 100% 100%, 0 100%, 0 5%, 11% 5%);
+    transform: translateX(0px);
+  }
+}
