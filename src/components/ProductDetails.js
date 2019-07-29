@@ -1,7 +1,7 @@
 import React from 'react';
 import tempData from '../tempData.json';
 
-const ProductDetails = ({ match }) => {
+const ProductDetails = ({ match, basketState, setBasketState }) => {
   const product = tempData.filter(product => product.id === parseInt(match.params.id))[0];
 
   return (
@@ -18,7 +18,10 @@ const ProductDetails = ({ match }) => {
           <button className="bg-red-500 hover:bg-red-600 font-bold m-2 py-2 px-4 rounded">
             BUY NOW
           </button>
-          <button className="bg-yellow-400 hover:bg-yellow-500 font-bold m-2 py-2 px-4 rounded">
+          <button
+            onClick={() => setBasketState([...basketState, product])}
+            className="bg-yellow-400 hover:bg-yellow-500 font-bold m-2 py-2 px-4 rounded"
+          >
             ADD TO BASKET
           </button>
         </div>

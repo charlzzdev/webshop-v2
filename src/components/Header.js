@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-const Header = () => {
+const Header = ({ basketState }) => {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const menuIcon = <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 cursor-pointer block sm:hidden" onClick={() => setMenuOpen(!menuOpen)} viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>;
@@ -21,7 +21,7 @@ const Header = () => {
         </li>
         <li className="px-4 py-3 text-gray-700 hover:text-gray-900">
           <Link to="/cart">
-            Cart <span className="w-6 h-6 ml-2 inline-block bg-teal-400 text-center rounded-full">0</span>
+            Cart <span className="w-6 h-6 ml-2 inline-block bg-teal-400 text-center rounded-full">{basketState.length}</span>
           </Link>
         </li>
         <li className="px-4 py-3 text-gray-700 hover:text-gray-900">
