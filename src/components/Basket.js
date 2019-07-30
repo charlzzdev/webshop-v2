@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const Basket = ({ basketState, setBasketOpen }) => {
 
@@ -10,12 +11,13 @@ const Basket = ({ basketState, setBasketOpen }) => {
         {
           basketState.map(item => (
             <li key={item.id + Math.random()} className="relative border-b-2 border-teal-600 pb-2">
-              <p className="truncate">{item.name}</p>
-              <p className="text-sm">${item.price}</p>
+              <Link to={`/products/view/${item.id}`} className="truncate">{item.name}</Link>
+              <p className="text-sm">Quantity: {item.quantity}</p>
+              <p className="text-sm">${(item.price * item.quantity).toFixed(2)}</p>
               <p className="truncate text-sm text-gray-800">
                 {item.description}
               </p>
-              <svg className="absolute right-0 cursor-pointer" style={{ top: '50%', transform: 'translateY(-50%)' }} width="25" height="25" stroke="#f00" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+              <Link to={`/products/view/${item.id}`}><svg className="absolute right-0 cursor-pointer" style={{ top: '50%', transform: 'translateY(-50%)' }} width="25" height="25" fill="none" stroke="#555" strokeWidth="3" strokeLinecap="square" strokeLinejoin="arcs"><polygon points="16 3 21 8 8 21 3 21 3 16 16 3"></polygon></svg></Link>
             </li>
           ))
         }

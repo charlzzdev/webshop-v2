@@ -1,8 +1,33 @@
-import React from 'react';
+import React, { useState } from 'react';
 import tempData from '../tempData.json';
 
 const ProductDetails = ({ match, basketState, setBasketState }) => {
+  const [quantity, setQuantity] = useState(0);
   const product = tempData.filter(product => product.id === parseInt(match.params.id))[0];
+  const productInBasket = basketState.some(item => item.id === product.id);
+
+  const handleBasket = () => {
+    if (quantity < 1) {
+      setBasketState(prevArr => prevArr.filter(prev => prev.id !== product.id))
+    }
+
+    if (!productInBasket) {
+      setBasketState([
+        ...basketState,
+        { ...product, quantity: (quantity > 0 && quantity) || 1 }
+      ]);
+    } else {
+      setBasketState(prevArr => {
+        let arr = prevArr || [];
+        arr.forEach((prev, i) => {
+          if (prev.id === product.id) {
+            arr[i].quantity = quantity;
+          }
+        });
+        return arr;
+      });
+    }
+  }
 
   return (
     <div className="w-3/4 flex flex-wrap justify-center mx-auto mt-10 md:mt-20">
@@ -15,14 +40,26 @@ const ProductDetails = ({ match, basketState, setBasketState }) => {
         <p className="text-gray-700 py-3">{product.description}</p>
         <h2 className="text-2xl pb-4">${product.price}</h2>
         <div className="flex flex-wrap justify-center md:justify-start">
+          <input
+            onChange={(e) => {
+              const value = e.target.value;
+              value >= 0 && value < 100 && setQuantity(e.target.value);
+            }}
+            value={(quantity >= 0 && quantity < 100) ? quantity : 99}
+            type="number"
+            placeholder="Qty"
+            className="w-16 bg-gray-100 text-center"
+          />
           <button className="bg-red-500 hover:bg-red-600 font-bold m-2 py-2 px-4 rounded">
             BUY NOW
           </button>
           <button
-            onClick={() => setBasketState([...basketState, product])}
+            onClick={() => handleBasket()}
             className="bg-yellow-400 hover:bg-yellow-500 font-bold m-2 py-2 px-4 rounded"
           >
-            ADD TO BASKET
+            {
+              productInBasket ? quantity > 0 ? `CHANGE QUANTITY TO ${quantity || 1}` : 'REMOVE FROM BASKET' : 'ADD TO BASKET'
+            }
           </button>
         </div>
       </div>
