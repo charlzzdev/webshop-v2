@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import tempData from '../tempData.json';
 
-const Products = ({ match }) => {
+const Products = ({ match, history }) => {
   const [sortedItems, setSortedItems] = useState([]);
   const items = tempData;
 
@@ -25,7 +25,8 @@ const Products = ({ match }) => {
   const redOrGreen = (bool) => bool ? 'green' : 'red';
 
   return (
-    <div className="flex flex-wrap justify-center mt-20">
+    <div className="flex flex-wrap justify-center relative mt-20">
+      <button onClick={() => history.goBack()} className="absolute" style={{ top: "-40px" }}><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#1a202c" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M19 12H6M12 5l-7 7 7 7" /></svg></button>
       {
         sortedItems.map(product => (
           <Link to={`/products/view/${product.id}`} key={product.id} className="max-w-sm m-3 rounded overflow-hidden shadow-lg">

@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 const Basket = ({ basketState, setBasketOpen }) => {
 
   return (
-    <div className="basket absolute w-64 h-64 px-4 pt-6 overflow-y-auto text-black bg-teal-500">
+    <div className="basket absolute w-64 h-64 px-4 pt-6 overflow-y-auto text-black bg-teal-500 z-10">
       <svg onClick={() => setBasketOpen(false)} className="absolute top-0 right-0 mr-2 mt-4 z-10 cursor-pointer" width="20" height="20" stroke="#000" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
 
       <ul>

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import tempData from '../tempData.json';
 import { Link } from 'react-router-dom';
 
-const ProductDetails = ({ match, basketState, setBasketState }) => {
+const ProductDetails = ({ match, history, basketState, setBasketState }) => {
   const [quantity, setQuantity] = useState(0);
   const product = tempData.filter(product => product.id === parseInt(match.params.id))[0];
   const productInBasket = basketState.some(item => item.id === product.id);
@@ -32,7 +32,8 @@ const ProductDetails = ({ match, basketState, setBasketState }) => {
 
   return (
     <>
-      <div className="w-3/4 flex flex-wrap justify-center mx-auto mt-10 md:mt-20">
+      <div className="w-3/4 flex flex-wrap justify-center relative mx-auto mt-10 md:mt-20">
+        <button onClick={() => history.goBack()} className="absolute" style={{ top: "-40px" }}><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#1a202c" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M19 12H6M12 5l-7 7 7 7" /></svg></button>
         <div className="my-auto bg-gray-300 w-full md:w-2/4">
           <img src="https://images.unsplash.com/photo-1516387938699-a93567ec168e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1351&q=80" alt="" />
         </div>
@@ -73,7 +74,7 @@ const ProductDetails = ({ match, basketState, setBasketState }) => {
       {
         tempData.map(item => (
           item.type === product.type && item.id !== product.id && (
-            <Link to={`/products/view/${item.id}`} className="block w-1/3 mx-auto bg-gray-100 mb-2 p-4 rounded">
+            <Link to={`/products/view/${item.id}`} key={item.id} className="block w-1/3 mx-auto bg-gray-100 mb-2 p-4 rounded">
               <h2 className="text-2xl font-bold">{item.name}</h2>
               <h3 className="text-sm text-gray-800">${item.price}</h3>
               <h4>{item.description}</h4>

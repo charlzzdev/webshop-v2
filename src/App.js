@@ -14,9 +14,10 @@ function App() {
       <Route exact path="/" component={LandingPage} />
       <Route exact path="/products/:product?" component={Products} />
       <Route exact path="/products/view/:id" component={
-        ({ match }) => (
+        ({ match, history }) => (
           <ProductDetails
             match={match}
+            history={history}
             basketState={basketState}
             setBasketState={setBasketState}
           />
