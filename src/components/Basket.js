@@ -23,6 +23,12 @@ const Basket = ({ basketState, setBasketOpen }) => {
         }
         {basketState.length === 0 && "The basket is empty."}
       </ul>
+      {basketState.length > 0 && (
+        <Link
+          to="/checkout"
+          className="bg-red-500 hover:bg-red-600 block px-2 my-2 text-center font-bold rounded-sm"
+        >Checkout</Link>
+      )}
     </div>
   )
 }

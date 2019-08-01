@@ -7,16 +7,24 @@ const ProductDetails = ({ match, history, basketState, setBasketState }) => {
   const product = tempData.filter(product => product.id === parseInt(match.params.id))[0];
   const productInBasket = basketState.some(item => item.id === product.id);
 
+  const addToBasket = () => {
+    setBasketState([
+      ...basketState,
+      { ...product, quantity: quantity || 1 }
+    ]);
+  }
+
+  const removeFromBasket = () => {
+    setBasketState(prevArr => prevArr.filter(prev => prev.id !== product.id));
+  }
+
   const handleBasket = () => {
     if (quantity < 1) {
-      setBasketState(prevArr => prevArr.filter(prev => prev.id !== product.id))
+      removeFromBasket();
     }
 
     if (!productInBasket) {
-      setBasketState([
-        ...basketState,
-        { ...product, quantity: (quantity > 0 && quantity) || 1 }
-      ]);
+      addToBasket();
     } else {
       setBasketState(prevArr => {
         let arr = prevArr || [];
@@ -53,9 +61,15 @@ const ProductDetails = ({ match, history, basketState, setBasketState }) => {
               placeholder="Qty"
               className="w-16 bg-gray-100 text-center"
             />
-            <button className="bg-red-500 hover:bg-red-600 font-bold m-2 py-2 px-4 rounded">
+            <button
+              onClick={() => {
+                (quantity > 0 || !productInBasket) && handleBasket();
+                history.push('/checkout');
+              }}
+              className="bg-red-500 hover:bg-red-600 font-bold m-2 py-2 px-4 rounded"
+            >
               BUY NOW
-          </button>
+            </button>
             <button
               onClick={() => handleBasket()}
               className="bg-yellow-400 hover:bg-yellow-500 font-bold m-2 py-2 px-4 rounded"

@@ -4,6 +4,7 @@ import Header from './components/Header';
 import LandingPage from './components/LandingPage';
 import Products from './components/Products';
 import ProductDetails from './components/ProductDetails';
+import Checkout from './components/Checkout';
 
 function App() {
   const [basketState, setBasketState] = useState([]);
@@ -23,6 +24,7 @@ function App() {
           />
         )
       } />
+      <Route exact path="/checkout" component={() => <Checkout basketState={basketState} /> } />
     </BrowserRouter>
   );
 }
