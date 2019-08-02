@@ -5,11 +5,11 @@ const NotFound = ({ location, history }) => {
   const [time, setTime] = useState(5);
 
   useEffect(() => {
-    if (time > 0) {
-      setTimeout(() => {
-        setTime(time - 1);
-      }, 1000);
-    }
+    let timer = setTimeout(() => {
+      setTime(time - 1);
+    }, 1000);
+
+    return () => clearTimeout(timer);
   }, [time]);
 
   if (time === 0) {
@@ -25,7 +25,8 @@ const NotFound = ({ location, history }) => {
         Path <span className="px-2 bg-red-200 rounded-sm">{location.pathname}</span> was not found
       </h2>
       <h5 className="text-center mt-6">
-        Redirecting in {time} seconds. <Link to="/" className="text-blue-500 underline">Redirect now</Link>
+        Redirecting {time > 0 ? `in ${time} second${time > 1 ? 's' : ''}` : 'now..'}.
+        <Link to="/" className="block text-blue-500 underline">Redirect now</Link>
       </h5>
     </div>
   )
