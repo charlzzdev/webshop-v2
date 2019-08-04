@@ -1,9 +1,48 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Redirect } from 'react-router-dom';
+import LoadingSpinner from './LoadingSpinner';
 
 const Checkout = ({ basketState }) => {
+  const [transactionState, setTransactionState] = useState({});
+
   let subtotal = 0;
   basketState.forEach(product => subtotal += product.price * product.quantity);
+
+  useEffect(() => {
+    //eslint-disable-next-line
+    paypal.Buttons({
+      style: {
+        color: 'blue',
+        label: 'checkout',
+        height: 40
+      },
+
+      createOrder: (data, actions) => {
+        return actions.order.create({
+          purchase_units: [{
+            amount: {
+              value: subtotal
+            },
+            payee: {
+              email_address: 'payee@charleseller.dev'
+            }
+          }]
+        });
+      },
+
+      onApprove: (data, actions) => {
+        setTransactionState({ loading: true });
+        return actions.order.capture().then((details) => {
+          setTransactionState({
+            loading: false,
+            name: details.payer.name.given_name,
+            status: details.status,
+            success: details.status === 'COMPLETED' ? true : false
+          });
+        });
+      }
+    }).render('#paypal-btn');
+  }, [subtotal]);
 
   return (
     <div className="w-1/2 mx-auto">
@@ -18,7 +57,18 @@ const Checkout = ({ basketState }) => {
           </div>
         ))
       }
-      <button className="bg-red-500 hover:bg-red-600 font-bold py-2 px-4 rounded float-right">Pay ${subtotal.toFixed(2)}</button>
+
+      <h2 className="text-right font-bold my-4">Subtotal: ${subtotal.toFixed(2)}</h2>
+
+      {transactionState.loading && <LoadingSpinner />}
+      {transactionState.status && (
+        <div className={`${transactionState.success ? 'bg-green-500' : 'bg-red-500'} py-4 px-6 rounded my-2`}>
+          <h1 className="font-bold text-lg">Transaction {transactionState.success ? 'successful' : 'failure'}</h1>
+          <p>{transactionState.success ? `Thank you for your purchase, ${transactionState.name}.` : 'Please try again later.'}</p>
+        </div>
+      )}
+
+      <section id="paypal-btn" className="text-center"></section>
 
       {basketState.length === 0 && <Redirect to="/" />}
     </div>

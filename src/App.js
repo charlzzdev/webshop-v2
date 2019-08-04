@@ -5,7 +5,7 @@ import LandingPage from './components/LandingPage';
 import Products from './components/Products';
 import ProductDetails from './components/ProductDetails';
 import Checkout from './components/Checkout';
-import NotFound from './components/NotFound.js';
+import NotFound from './components/NotFound';
 
 function App() {
   const [basketState, setBasketState] = useState([]);
