@@ -1,11 +1,27 @@
-import React, { useState } from 'react';
-import tempData from '../tempData.json';
+import React, { useState, useEffect } from 'react';
+import firebase from 'firebase/app';
+import 'firebase/firestore';
 import { Link } from 'react-router-dom';
 
 const ProductDetails = ({ match, history, basketState, setBasketState }) => {
   const [quantity, setQuantity] = useState(0);
-  const product = tempData.filter(product => product.id === parseInt(match.params.id))[0];
+  const [product, setProduct] = useState({});
+  const [similarItems, setSimilarItems] = useState([]);
   const productInBasket = basketState.some(item => item.id === product.id);
+
+  useEffect(() => {
+    firebase.firestore().collection('/items').where("id", "==", match.params.id).get().then(data => {
+      setProduct(data.docs[0].data());
+
+      firebase.firestore().collection('/items').where("type", "==", data.docs[0].data().type).get().then(data => {
+        const similarArr = [];
+        data.docs.forEach(doc => {
+          similarArr.push(doc.data());
+        });
+        setSimilarItems(similarArr);
+      });
+    });
+  }, [match.params.id]);
 
   const addToBasket = () => {
     setBasketState([
@@ -86,8 +102,8 @@ const ProductDetails = ({ match, history, basketState, setBasketState }) => {
         <span className="bg-red-200 px-4 rounded">Similar</span> products
       </h1>
       {
-        tempData.map(item => (
-          item.type === product.type && item.id !== product.id && (
+        similarItems.map(item => (
+          item.id !== product.id && (
             <Link to={`/products/view/${item.id}`} key={item.id} className="block w-1/3 mx-auto bg-gray-100 mb-2 p-4 rounded">
               <h2 className="text-2xl font-bold">{item.name}</h2>
               <h3 className="text-sm text-gray-800">${item.price}</h3>
