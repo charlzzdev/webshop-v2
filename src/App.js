@@ -7,6 +7,7 @@ import Products from './components/Products';
 import ProductDetails from './components/ProductDetails';
 import Checkout from './components/Checkout';
 import NotFound from './components/NotFound';
+import LoginPage from './components/LoginPage';
 
 firebase.initializeApp({
   apiKey: "AIzaSyAnfTXUhMgENtNciW8T72LQW0c8CyfVv8k",
@@ -20,10 +21,11 @@ firebase.initializeApp({
 
 function App() {
   const [basketState, setBasketState] = useState([]);
+  const [userInfo, setUserInfo] = useState({});
 
   return (
     <BrowserRouter>
-      <Route path="/" component={() => <Header basketState={basketState} />} />
+      <Route path="/" component={() => <Header basketState={basketState} email={userInfo.email} />} />
       <Switch>
         <Route exact path="/" component={LandingPage} />
         <Route exact path="/products/:product?" component={Products} />
@@ -38,6 +40,11 @@ function App() {
           )
         } />
         <Route exact path="/checkout" component={() => <Checkout basketState={basketState} />} />
+        <Route exact path="/login" component={
+          ({ history }) => <LoginPage
+            setUserInfo={setUserInfo}
+            history={history} />
+        } />
         <Route component={NotFound} />
       </Switch>
     </BrowserRouter>

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Basket from './Basket';
 
-const Header = ({ basketState }) => {
+const Header = ({ basketState, email }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [basketOpen, setBasketOpen] = useState(false);
 
@@ -28,8 +28,8 @@ const Header = ({ basketState }) => {
           {basketOpen && <Basket basketState={basketState} setBasketOpen={setBasketOpen} />}
         </li>
         <li className="px-4 py-3 text-gray-700 hover:text-gray-900">
-          <Link to="/login">
-            Login
+          <Link to={`${email ? `/profile/${email}` : '/login'}`}>
+            {email ? email : 'Login'}
           </Link>
         </li>
       </ul>
