@@ -2,11 +2,14 @@ import React, { useState, useEffect } from 'react';
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 import { Link } from 'react-router-dom';
+import LoadingSpinner from './LoadingSpinner';
 
 const ProductDetails = ({ match, history, basketState, setBasketState }) => {
   const [quantity, setQuantity] = useState(0);
   const [product, setProduct] = useState({});
   const [similarItems, setSimilarItems] = useState([]);
+  const [everythingLoaded, setEverythingLoaded] = useState(false);
+
   const productInBasket = basketState.some(item => item.id === product.id);
 
   useEffect(() => {
@@ -19,6 +22,8 @@ const ProductDetails = ({ match, history, basketState, setBasketState }) => {
           similarArr.push(doc.data());
         });
         setSimilarItems(similarArr);
+
+        setEverythingLoaded(true);
       });
     });
   }, [match.params.id]);
@@ -56,6 +61,7 @@ const ProductDetails = ({ match, history, basketState, setBasketState }) => {
 
   return (
     <>
+      {!everythingLoaded && <LoadingSpinner fullscreen />}
       <div className="w-3/4 flex flex-wrap justify-center relative mx-auto mt-10 md:mt-20">
         <button onClick={() => history.goBack()} className="absolute" style={{ top: "-40px" }}><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#1a202c" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M19 12H6M12 5l-7 7 7 7" /></svg></button>
         <div className="my-auto bg-gray-300 w-full md:w-2/4">
