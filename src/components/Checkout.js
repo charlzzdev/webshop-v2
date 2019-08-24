@@ -41,7 +41,7 @@ const Checkout = ({ basketState }) => {
           });
         });
       }
-    }).render('#paypal-btn');
+    }).render('#paypal-btn').catch(() => null);
   }, [subtotal]);
 
   return (
