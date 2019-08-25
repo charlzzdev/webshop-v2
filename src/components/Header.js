@@ -28,7 +28,7 @@ const Header = ({ basketState, email }) => {
           {basketOpen && <Basket basketState={basketState} setBasketOpen={setBasketOpen} />}
         </li>
         <li className="px-4 py-3 text-gray-700 hover:text-gray-900">
-          <Link to={`${email ? `/profile/${email}` : '/login'}`}>
+          <Link to={`${email ? '/profile' : '/login'}`}>
             {email ? email : 'Login'}
           </Link>
         </li>

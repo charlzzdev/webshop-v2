@@ -8,6 +8,7 @@ import ProductDetails from './components/ProductDetails';
 import Checkout from './components/Checkout';
 import NotFound from './components/NotFound';
 import LoginPage from './components/LoginPage';
+import ProfilePage from './components/ProfilePage';
 
 firebase.initializeApp({
   apiKey: "AIzaSyAnfTXUhMgENtNciW8T72LQW0c8CyfVv8k",
@@ -45,6 +46,7 @@ function App() {
             setUserInfo={setUserInfo}
             history={history} />
         } />
+        <Route exact path="/profile" component={() => <ProfilePage user={userInfo} />} />
         <Route component={NotFound} />
       </Switch>
     </BrowserRouter>
