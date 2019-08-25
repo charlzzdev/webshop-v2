@@ -1,7 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 const Basket = ({ basketState, setBasketOpen }) => {
+  useEffect(() => {
+    const handleClickOutside = (e) => !e.target.classList.contains('basket') && setBasketOpen(false);
+
+    document.addEventListener('click', handleClickOutside);
+    return () => document.removeEventListener('click', handleClickOutside)
+  }, [setBasketOpen]);
 
   return (
     <div className="basket absolute w-64 h-64 px-4 pt-6 overflow-y-auto text-black bg-teal-500 z-10">
