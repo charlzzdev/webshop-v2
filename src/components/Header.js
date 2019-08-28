@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import Basket from './Basket';
+import Basket from './products/Basket';
 
 const Header = ({ basketState, email }) => {
   const [menuOpen, setMenuOpen] = useState(false);

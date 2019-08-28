@@ -3,12 +3,12 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import firebase from 'firebase/app';
 import Header from './components/Header';
 import LandingPage from './components/LandingPage';
-import Products from './components/Products';
-import ProductDetails from './components/ProductDetails';
-import Checkout from './components/Checkout';
+import Products from './components/products/Products';
+import ProductDetails from './components/products/ProductDetails';
+import Checkout from './components/products/Checkout';
 import NotFound from './components/NotFound';
-import LoginPage from './components/LoginPage';
-import ProfilePage from './components/ProfilePage';
+import LoginPage from './components/profile/LoginPage';
+import ProfilePage from './components/profile/ProfilePage';
 
 firebase.initializeApp({
   apiKey: "AIzaSyAnfTXUhMgENtNciW8T72LQW0c8CyfVv8k",
