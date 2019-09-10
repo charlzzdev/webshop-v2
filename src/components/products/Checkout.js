@@ -1,9 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Redirect } from 'react-router-dom';
+import firebase from 'firebase/app';
+import 'firebase/firestore';
 import LoadingSpinner from '../LoadingSpinner';
 
 const Checkout = ({ basketState }) => {
   const [transactionState, setTransactionState] = useState({});
+  const shippingForm = useRef(null);
 
   let subtotal = 0;
   basketState.forEach(product => subtotal += product.price * product.quantity);
@@ -39,10 +42,24 @@ const Checkout = ({ basketState }) => {
             status: details.status,
             success: details.status === 'COMPLETED' ? true : false
           });
+
+          const [country, firstName, lastName, street, city, state, zip, email, phone] = shippingForm.current;
+          firebase.firestore().collection('orders').add({
+            country: country.value,
+            firstName: firstName.value,
+            lastName: lastName.value,
+            street: street.value,
+            city: city.value,
+            state: state.value,
+            zip: zip.value,
+            email: email.value,
+            phone: phone.value,
+            orders: basketState
+          });
         });
       }
     }).render('#paypal-btn').catch(() => null);
-  }, [subtotal]);
+  }, [subtotal, basketState]);
 
   return (
     <div className="w-1/2 mx-auto">
@@ -59,6 +76,25 @@ const Checkout = ({ basketState }) => {
       }
 
       <h2 className="text-right font-bold my-4">Subtotal: ${subtotal.toFixed(2)}</h2>
+
+      <h2 className="text-2xl font-bold">Shipping address</h2>
+      <form ref={shippingForm}>
+        <input type="text" placeholder="Country" className="block" />
+        <div className="block">
+          <input type="text" placeholder="First name" />
+          <input type="text" placeholder="Last name" />
+        </div>
+        <input type="text" placeholder="Street" className="block" />
+        <div className="block">
+          <input type="text" placeholder="City" />
+          <input type="text" placeholder="State / Province / Region" />
+          <input type="text" placeholder="ZIP Code" />
+        </div>
+        <div className="block mb-8">
+          <input type="text" placeholder="Email" />
+          <input type="text" placeholder="Phone number" />
+        </div>
+      </form>
 
       {transactionState.loading && <LoadingSpinner />}
       {transactionState.status && (
