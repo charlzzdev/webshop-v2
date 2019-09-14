@@ -60,11 +60,14 @@
   cursor: pointer;
 }
 
-input.block, .block input{
+input, select, textarea{
   background: #f9f9f9;
   border: 2px solid #ddd;
   border-radius: 5px;
+  padding: 0.5rem;
+}
+
+.shipping input{
   margin-top: 0.75rem;
   margin-right: 0.5rem;
-  padding: 0.5rem;
 }

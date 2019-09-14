@@ -52,6 +52,7 @@ const ProductDetails = ({ match, history, basketState, setBasketState }) => {
         arr.forEach((prev, i) => {
           if (prev.id === product.id) {
             arr[i].quantity = quantity;
+            setQuantity(0);
           }
         });
         return arr;
@@ -81,7 +82,7 @@ const ProductDetails = ({ match, history, basketState, setBasketState }) => {
               value={(quantity >= 0 && quantity < 100) ? quantity : 99}
               type="number"
               placeholder="Qty"
-              className="w-16 bg-gray-100 text-center"
+              className="w-16 my-2 mr-2 bg-gray-100 text-center"
             />
             <button
               onClick={() => {

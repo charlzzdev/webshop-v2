@@ -78,7 +78,7 @@ const Checkout = ({ basketState }) => {
       <h2 className="text-right font-bold my-4">Subtotal: ${subtotal.toFixed(2)}</h2>
 
       <h2 className="text-2xl font-bold">Shipping address</h2>
-      <form ref={shippingForm}>
+      <form ref={shippingForm} className="shipping">
         <input type="text" placeholder="Country" className="block" />
         <div className="block">
           <input type="text" placeholder="First name" />
