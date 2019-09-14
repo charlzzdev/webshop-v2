@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Redirect } from 'react-router-dom';
 import Info from '../Info';
 import UploadedProducts from './UploadedProducts';
+import OrdersToComplete from './OrdersToComplete';
 
 const ProfilePage = ({ user }) => {
   const [updatedInfo, setUpdatedInfo] = useState({});
@@ -65,6 +66,7 @@ const ProfilePage = ({ user }) => {
       <UploadedProducts email={user.email} setStatus={setStatus} />
       <h1 className="text-4xl border-b mb-4 mt-8">Orders to complete</h1>
       <div className="orders-to-complete"></div>
+      <OrdersToComplete email={user.email} />
     </div>
   )
 }
