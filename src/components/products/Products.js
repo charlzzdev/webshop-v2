@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import firebase from 'firebase/app';
 import 'firebase/firestore';
+import { PhonesIcon, ComputersIcon, AccessoriesIcon, ConsolesIcon } from '../icons';
 
 const Products = ({ match, history }) => {
   const [sortedItems, setSortedItems] = useState([]);
@@ -19,9 +20,7 @@ const Products = ({ match, history }) => {
         setSortedItems(docs.filter(doc => doc.type === match.params.product));
       }
     })
-
-    //eslint-disable-next-line
-  }, []);
+  }, [match.params.product]);
 
   const daysSince = (release) => {
     const dayInMillisecs = 24 * 60 * 60 * 1000;
@@ -35,6 +34,12 @@ const Products = ({ match, history }) => {
   return (
     <div className="flex flex-wrap justify-center relative mt-20">
       <button onClick={() => history.goBack()} className="absolute" style={{ top: "-40px" }}><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#1a202c" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M19 12H6M12 5l-7 7 7 7" /></svg></button>
+      <div className="fixed left-0 hidden sm:block">
+        <Link to="/products/phones" className="nav-icon"><PhonesIcon /></Link>
+        <Link to="/products/computers" className="nav-icon"><ComputersIcon /></Link>
+        <Link to="/products/accessories" className="nav-icon"><AccessoriesIcon /></Link>
+        <Link to="/products/consoles" className="nav-icon"><ConsolesIcon /></Link>
+      </div>
       {
         sortedItems.map(product => (
           <Link to={`/products/view/${product.id}`} key={product.id} className="max-w-sm m-3 rounded overflow-hidden shadow-lg">
