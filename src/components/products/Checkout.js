@@ -3,15 +3,27 @@ import { Redirect } from 'react-router-dom';
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 import LoadingSpinner from '../LoadingSpinner';
+import Info from '../Info';
 
 const Checkout = ({ basketState }) => {
   const [transactionState, setTransactionState] = useState({});
+  const [subtotal, setSubtotal] = useState(0);
+  const [coupon, setCoupon] = useState({});
+  const [couponStatus, setCouponStatus] = useState({});
   const shippingForm = useRef(null);
-
-  let subtotal = 0;
-  basketState.forEach(product => subtotal += product.price * product.quantity);
+  const couponInput = useRef(null);
+  const discountBtn = useRef(null);
+  const paypalBtn = useRef(null);
 
   useEffect(() => {
+    paypalBtn.current.innerHTML = '';
+
+    let tempSubtotal = 0;
+    basketState.forEach(product => tempSubtotal += product.price * product.quantity);
+    if (coupon.value) {
+      setSubtotal(tempSubtotal - (tempSubtotal * coupon.value));
+    } else setSubtotal(tempSubtotal);
+
     //eslint-disable-next-line
     paypal.Buttons({
       style: {
@@ -24,7 +36,7 @@ const Checkout = ({ basketState }) => {
         return actions.order.create({
           purchase_units: [{
             amount: {
-              value: subtotal
+              value: subtotal.toFixed(2)
             },
             payee: {
               email_address: 'payee@charleseller.dev'
@@ -59,7 +71,29 @@ const Checkout = ({ basketState }) => {
         });
       }
     }).render('#paypal-btn').catch(() => null);
-  }, [subtotal, basketState]);
+  }, [basketState, subtotal, coupon.value]);
+
+  const checkCoupon = () => {
+    firebase.firestore().collection('coupons').get()
+      .then(data => {
+        let couponFound = false;
+
+        data.docs.forEach(coupon => {
+          coupon = { ...coupon.data() };
+          if (coupon.code === couponInput.current.value) {
+            setCoupon({ code: coupon.code, value: coupon.value });
+            couponFound = true;
+          }
+        });
+
+        if (couponFound) {
+          setCouponStatus({ color: 'bg-green-400', msg: 'Coupon applied successfully.' });
+          couponInput.current.disabled = true;
+          discountBtn.current.disabled = true;
+          discountBtn.current.innerHTML = 'Discount applied';
+        } else setCouponStatus({ color: 'bg-red-400', msg: 'Invalid coupon.' });
+      });
+  }
 
   return (
     <div className="w-1/2 mx-auto">
@@ -96,6 +130,17 @@ const Checkout = ({ basketState }) => {
         </div>
       </form>
 
+      <h2 className="text-2xl font-bold">Coupon</h2>
+      <div className="block mt-3 mb-8">
+        <input type="text" ref={couponInput} placeholder="Discount code" />
+        <button
+          onClick={checkCoupon}
+          ref={discountBtn}
+          className="p-2 ml-2 bg-green-400 hover:bg-green-500 rounded"
+        >Apply discount</button>
+        <Info color={couponStatus.color} msg={couponStatus.msg} setStatus={setCouponStatus} />
+      </div>
+
       {transactionState.loading && <LoadingSpinner />}
       {transactionState.status && (
         <div className={`${transactionState.success ? 'bg-green-500' : 'bg-red-500'} py-4 px-6 rounded my-2`}>
@@ -104,7 +149,7 @@ const Checkout = ({ basketState }) => {
         </div>
       )}
 
-      <section id="paypal-btn" className="text-center"></section>
+      <section id="paypal-btn" ref={paypalBtn} className="text-center"></section>
 
       {basketState.length === 0 && <Redirect to="/" />}
     </div>

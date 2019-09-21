@@ -86,3 +86,8 @@ input, select, textarea{
   background: #eee;
   width: 4rem;
 }
+
+input:disabled, button:disabled, button:disabled:hover{
+  background: #eee;
+  cursor: not-allowed;
+}
