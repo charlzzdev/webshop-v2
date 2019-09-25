@@ -14,7 +14,8 @@ const ProductDetails = ({ match, history, basketState, setBasketState }) => {
 
   useEffect(() => {
     firebase.firestore().collection('/items').where("id", "==", match.params.id).get().then(data => {
-      setProduct(data.docs[0].data());
+      firebase.storage().ref().child(match.params.id).getDownloadURL()
+        .then(url => setProduct({ ...data.docs[0].data(), url }));
 
       firebase.firestore().collection('/items').where("type", "==", data.docs[0].data().type).get().then(data => {
         const similarArr = [];
@@ -65,8 +66,8 @@ const ProductDetails = ({ match, history, basketState, setBasketState }) => {
       {!everythingLoaded && <LoadingSpinner fullscreen />}
       <div className="w-3/4 flex flex-wrap justify-center relative mx-auto mt-10 md:mt-20">
         <button onClick={() => history.goBack()} className="absolute" style={{ top: "-40px" }}><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#1a202c" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M19 12H6M12 5l-7 7 7 7" /></svg></button>
-        <div className="my-auto bg-gray-300 w-full md:w-2/4">
-          <img src="https://images.unsplash.com/photo-1516387938699-a93567ec168e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1351&q=80" alt="" />
+        <div className="my-auto w-full md:w-2/4">
+          <img src={product.url} className="mx-auto" alt={product.name} />
         </div>
         <div className="w-full md:w-2/4 pl-0 md:pl-16 pt-10 md:pt-0">
           <h1 className="text-3xl font-bold">{product.name} - {product.inStock ? 'In Stock' : 'Out of Stock'}</h1>

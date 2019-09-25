@@ -2,16 +2,28 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import firebase from 'firebase/app';
 import 'firebase/firestore';
+import 'firebase/storage';
 import { PhonesIcon, ComputersIcon, AccessoriesIcon, ConsolesIcon } from '../icons';
+import LoadingSpinner from '../LoadingSpinner';
 
 const Products = ({ match, history }) => {
   const [sortedItems, setSortedItems] = useState([]);
+  const [images, setImages] = useState({});
 
   useEffect(() => {
     firebase.firestore().collection('/items').get().then(snapshot => {
       const docs = [];
       snapshot.docs.forEach(doc => {
         docs.push(doc.data());
+        firebase.storage().ref().child(doc.data().id).getDownloadURL()
+          .then(url => {
+            setImages(prevImages => {
+              return {
+                ...prevImages,
+                [doc.data().id]: url
+              }
+            })
+          })
       });
 
       if (!match.params.product) {
@@ -43,7 +55,10 @@ const Products = ({ match, history }) => {
       {
         sortedItems.map(product => (
           <Link to={`/products/view/${product.id}`} key={product.id} className="max-w-sm m-3 rounded overflow-hidden shadow-lg">
-            <img className="w-full" src="https://images.unsplash.com/photo-1516387938699-a93567ec168e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1351&q=80" alt="Sunset in the mountains" />
+            <div className="overflow-hidden" style={{ width: '300px', height: '200px' }}>
+              {!images[product.id] && <LoadingSpinner />}
+              <img src={images[product.id]} alt={product.name} />
+            </div>
             <div className="px-6 py-4">
               <div className="font-bold text-xl mb-2">{product.name}</div>
               <p className="text-gray-700 text-base">
