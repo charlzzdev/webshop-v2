@@ -11,13 +11,15 @@ const Products = ({ match, history }) => {
   const [images, setImages] = useState({});
 
   useEffect(() => {
+    let isSubscribed = true;
+
     firebase.firestore().collection('/items').get().then(snapshot => {
       const docs = [];
       snapshot.docs.forEach(doc => {
         docs.push(doc.data());
         firebase.storage().ref().child(doc.data().id).getDownloadURL()
           .then(url => {
-            setImages(prevImages => {
+            isSubscribed && setImages(prevImages => {
               return {
                 ...prevImages,
                 [doc.data().id]: url
@@ -27,11 +29,13 @@ const Products = ({ match, history }) => {
       });
 
       if (!match.params.product) {
-        setSortedItems(docs);
+        isSubscribed && setSortedItems(docs);
       } else {
-        setSortedItems(docs.filter(doc => doc.type === match.params.product));
+        isSubscribed && setSortedItems(docs.filter(doc => doc.type === match.params.product));
       }
-    })
+    });
+
+    return () => isSubscribed = false;
   }, [match.params.product]);
 
   const daysSince = (release) => {

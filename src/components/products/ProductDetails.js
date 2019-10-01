@@ -13,20 +13,24 @@ const ProductDetails = ({ match, history, basketState, setBasketState }) => {
   const productInBasket = basketState.some(item => item.id === product.id);
 
   useEffect(() => {
+    let isSubscribed = true;
+
     firebase.firestore().collection('/items').where("id", "==", match.params.id).get().then(data => {
       firebase.storage().ref().child(match.params.id).getDownloadURL()
-        .then(url => setProduct({ ...data.docs[0].data(), url }));
+        .then(url => isSubscribed && setProduct({ ...data.docs[0].data(), url }));
 
       firebase.firestore().collection('/items').where("type", "==", data.docs[0].data().type).get().then(data => {
         const similarArr = [];
         data.docs.forEach(doc => {
           similarArr.push(doc.data());
         });
-        setSimilarItems(similarArr);
+        isSubscribed && setSimilarItems(similarArr);
 
-        setEverythingLoaded(true);
+        isSubscribed && setEverythingLoaded(true);
       });
     });
+
+    return () => isSubscribed = false;
   }, [match.params.id]);
 
   const addToBasket = () => {
