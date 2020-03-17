@@ -1,3 +1,13 @@
+# Webshop App
+In this app, users can order items using a sandbox PayPal account. Registered users can upload items in different categories.
+
+## Tech used
+- **React** for frontend
+- **Firebase** as backend
+- **PayPal API** for handling transactions
+
+***
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
