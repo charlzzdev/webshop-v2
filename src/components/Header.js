@@ -38,7 +38,7 @@ const Header = ({ basketState, email }) => {
           </Link>
         </li>
         <li className="px-4 py-3 text-gray-700 hover:text-gray-900">
-          <Link to="/about">About</Link>
+          <Link to="/">Home</Link>
         </li>
         <li className="px-4 py-3 text-gray-700 hover:text-gray-900">
           <button onClick={() => setBasketOpen(!basketOpen)} style={{ outline: 0 }}>
@@ -51,6 +51,12 @@ const Header = ({ basketState, email }) => {
             {email ? email : 'Login'}
           </Link>
         </li>
+        {
+          !email &&
+          <li className="px-4 py-3 text-gray-700 hover:text-gray-900">
+            <Link to="/register">Register</Link>
+          </li>
+        }
       </ul>
     </header>
   )

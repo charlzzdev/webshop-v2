@@ -9,7 +9,7 @@ const LoginPage = ({ setUserInfo, history }) => {
     firebase.auth().signInWithEmailAndPassword(email, password).then(data => {
       setError('');
       setUserInfo(data.user);
-      history.goBack();
+      history.push('/profile');
     }).catch(error => setError(error.message));
   }
 
@@ -18,6 +18,7 @@ const LoginPage = ({ setUserInfo, history }) => {
       e.preventDefault();
       handleLogin(e.target[0].value, e.target[1].value);
     }}>
+      <h1 className="text-3xl font-bold mb-4">Login</h1>
       <p className="text-red-500 mb-2">{error.length > 0 && error}</p>
       <input type="text" placeholder="Email" autoComplete="username" className="p-2 border-2 mb-2 rounded font-semibold" />
       <input type="password" placeholder="Password" autoComplete="current-password" className="p-2 border-2 mb-2 rounded font-semibold" />

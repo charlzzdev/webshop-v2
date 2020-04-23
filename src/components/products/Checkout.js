@@ -132,7 +132,7 @@ const Checkout = ({ basketState }) => {
 
       <h2 className="text-2xl font-bold">Coupon</h2>
       <div className="block mt-3 mb-8">
-        <input type="text" ref={couponInput} placeholder="Discount code" />
+        <input type="text" ref={couponInput} placeholder="blackfriday13" />
         <button
           onClick={checkCoupon}
           ref={discountBtn}
@@ -140,6 +140,9 @@ const Checkout = ({ basketState }) => {
         >Apply discount</button>
         <Info color={couponStatus.color} msg={couponStatus.msg} setStatus={setCouponStatus} />
       </div>
+      <p>Sandbox account information to test payment:</p>
+      <p><strong>Email:</strong> test@charleseller.dev</p>
+      <p className="mb-4"><strong>Password:</strong> Test1234!</p>
 
       {transactionState.loading && <LoadingSpinner />}
       {transactionState.status && (

@@ -8,6 +8,7 @@ import ProductDetails from './components/products/ProductDetails';
 import Checkout from './components/products/Checkout';
 import NotFound from './components/NotFound';
 import LoginPage from './components/profile/LoginPage';
+import RegisterPage from './components/profile/RegisterPage';
 import ProfilePage from './components/profile/ProfilePage';
 
 firebase.initializeApp({
@@ -43,6 +44,11 @@ function App() {
         <Route exact path="/checkout" component={() => <Checkout basketState={basketState} />} />
         <Route exact path="/login" component={
           ({ history }) => <LoginPage
+            setUserInfo={setUserInfo}
+            history={history} />
+        } />
+        <Route exact path="/register" component={
+          ({ history }) => <RegisterPage
             setUserInfo={setUserInfo}
             history={history} />
         } />
