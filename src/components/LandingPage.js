@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import bgImage from '../assets/bg.jpg';
 import phonesImage from '../assets/phones.jpg';
 import computersImage from '../assets/computers.jpg';
 import accessoriesImage from '../assets/accessories.jpg';
@@ -11,43 +10,55 @@ const LandingPage = () => {
   const month = new Date().getMonth();
   const season =
     month < 2 || month === 11 ? 'Winter' :
-    month >= 2 && month < 5 ? 'Spring' :
-    month >= 5 && month < 8 ? 'Summer' : 'Fall';
+      month >= 2 && month < 5 ? 'Spring' :
+        month >= 5 && month < 8 ? 'Summer' : 'Fall';
 
-  const item = (name, width, src) => {
+  const item = (name, imageSrc, url) => {
     return (
-      <Link
-        to={`/products/${name.toLowerCase()}`}
-        className={`h-1/2 w-${width} flex justify-center items-center`}
-        style={{ backgroundImage: `url(${src})`, backgroundSize: 'cover' }}
-      >
-        <span className="bg-black px-2 py-1 hover:bg-white hover:text-black">{name}</span>
+      <Link to={url} className="m-2 hover:underline flex-1">
+        <h2 className="text-center font-bold mb-2 text-2xl">{name}</h2>
+        <div
+          className="h-64"
+          style={{ background: `url(${imageSrc})`, backgroundSize: 'cover' }}
+        ></div>
       </Link>
     )
   }
 
   return (
     <div
-      className="h-screen p-8 pb-64 xl:p-64 flex flex-wrap justify-between"
-      style={{ backgroundImage: `url(${bgImage})`, backgroundPositionX: 'center' }}
+      className="max-w-3xl mt-16 m-auto px-4 md:px-0"
     >
-      <div className="text-white w-full lg:w-auto">
-        <h1 className="text-5xl font-semibold">{`${season} Sale`}</h1>
-        <h2 className="text-3xl font-thin">35% off!</h2>
-        <Link
-          to="/products"
-          className="bg-red-500 hover:bg-red-600 font-bold mt-4 lg:mt-10 py-2 px-4 rounded"
-          style={{display: 'inline-block'}}
-        >
+      <div className="text-center">
+        <h1 className="text-4xl md:text-6xl" >{season} Sale</h1>
+        <h2 className="text-3xl font-bold mt-4" >35% off!</h2>
+        <Link to="/products" className="inline-block bg-red-500 px-8 py-4 font-bold rounded-md mt-8">
           SHOP NOW
         </Link>
       </div>
-
-      <div className="flex flex-wrap w-full h-64 lg:w-1/2 lg:h-auto mt-16 lg:mt-0 text-white font-bold">
-        {item('Phones', '1/3', phonesImage)}
-        {item('Computers', '2/3', computersImage)}
-        {item('Accessories', '2/3', accessoriesImage)}
-        {item('Consoles', '1/3', consolesImage)}
+      <div className="mt-24">
+        <h1 className="text-4xl md:text-6xl">Featured</h1>
+        <div className="flex mt-8 flex-col md:flex-row">
+          {item(
+            'Power Bank',
+            'https://cdn1.sharperimage.com/si/img/productImages/205088/205088-p3.jpg',
+            '/products/view/2'
+          )}
+          {item(
+            'Screen Protector',
+            'https://thegadgetflow.com/wp-content/uploads/2015/02/Tempered-Glass-Screen-Protector-1.jpg',
+            '/products/view/1'
+          )}
+        </div>
+      </div>
+      <div className="mt-24 mb-64">
+        <h1 className="text-4xl md:text-6xl">Categories</h1>
+        <div className="flex mt-8 flex-col md:flex-row">
+          {item('Phones', phonesImage, '/products/phones')}
+          {item('Computers', computersImage, '/products/computers')}
+          {item('Accessories', accessoriesImage, '/products/accessories')}
+          {item('Consoles', consolesImage, '/products/consoles')}
+        </div>
       </div>
     </div>
   )
