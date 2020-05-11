@@ -5,7 +5,7 @@ import 'firebase/firestore';
 import LoadingSpinner from '../LoadingSpinner';
 import Info from '../Info';
 
-const Checkout = ({ basketState }) => {
+const Checkout = ({ basketState, setBasketState, setOrderState }) => {
   const [transactionState, setTransactionState] = useState({});
   const [subtotal, setSubtotal] = useState(0);
   const [coupon, setCoupon] = useState({});
@@ -47,31 +47,40 @@ const Checkout = ({ basketState }) => {
 
       onApprove: (data, actions) => {
         setTransactionState({ loading: true });
-        return actions.order.capture().then((details) => {
-          setTransactionState({
-            loading: false,
-            name: details.payer.name.given_name,
-            status: details.status,
-            success: details.status === 'COMPLETED' ? true : false
-          });
+        return actions.order.capture()
+          .then(details => {
+            const [country, firstName, lastName, street, city, state, zip, email, phone] = shippingForm.current;
 
-          const [country, firstName, lastName, street, city, state, zip, email, phone] = shippingForm.current;
-          firebase.firestore().collection('orders').add({
-            country: country.value,
-            firstName: firstName.value,
-            lastName: lastName.value,
-            street: street.value,
-            city: city.value,
-            state: state.value,
-            zip: zip.value,
-            email: email.value,
-            phone: phone.value,
-            orders: basketState
+            firebase.firestore().collection('orders')
+              .add({
+                country: country.value,
+                firstName: firstName.value,
+                lastName: lastName.value,
+                street: street.value,
+                city: city.value,
+                state: state.value,
+                zip: zip.value,
+                email: email.value,
+                phone: phone.value,
+                orders: basketState
+              })
+              .then(() => {
+                setOrderState({
+                  name: details.payer.name.given_name,
+                  status: details.status
+                });
+                setBasketState([]);
+              });
+          })
+          .catch(error => {
+            setTransactionState({
+              loading: false,
+              error
+            });
           });
-        });
       }
     }).render('#paypal-btn').catch(() => null);
-  }, [basketState, subtotal, coupon.value]);
+  }, [basketState, setBasketState, setOrderState, subtotal, coupon.value]);
 
   const checkCoupon = () => {
     firebase.firestore().collection('coupons').get()
@@ -145,10 +154,10 @@ const Checkout = ({ basketState }) => {
       <p className="mb-4"><strong>Password:</strong> Test1234!</p>
 
       {transactionState.loading && <LoadingSpinner />}
-      {transactionState.status && (
-        <div className={`${transactionState.success ? 'bg-green-500' : 'bg-red-500'} py-4 px-6 rounded my-2`}>
-          <h1 className="font-bold text-lg">Transaction {transactionState.success ? 'successful' : 'failure'}</h1>
-          <p>{transactionState.success ? `Thank you for your purchase, ${transactionState.name}.` : 'Please try again later.'}</p>
+      {transactionState.error && (
+        <div className="bg-red-500 py-4 px-6 rounded my-2">
+          <h1 className="font-bold text-lg">Transaction failure</h1>
+          <p>Please try again later.</p>
         </div>
       )}
 

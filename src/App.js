@@ -24,10 +24,21 @@ firebase.initializeApp({
 function App() {
   const [basketState, setBasketState] = useState([]);
   const [userInfo, setUserInfo] = useState({});
+  const [orderState, setOrderState] = useState({});
 
   return (
     <BrowserRouter>
       <Route path="/" component={() => <Header basketState={basketState} email={userInfo.email} />} />
+      {orderState.status === 'COMPLETED' && (
+        <div className="bg-green-500 relative max-w-xl mx-2 sm:mx-auto my-4 py-4 px-6 rounded">
+          <button
+            className="absolute top-0 right-0 mr-2 underline"
+            onClick={() => setOrderState({ status: '' })}
+          >Close</button>
+          <h1 className="font-bold text-lg">Transaction successful</h1>
+          <p>Thank you for your purchase, {orderState.name}.</p>
+        </div>
+      )}
       <Switch>
         <Route exact path="/" component={LandingPage} />
         <Route exact path="/products/:product?" component={Products} />
@@ -41,7 +52,13 @@ function App() {
             />
           )
         } />
-        <Route exact path="/checkout" component={() => <Checkout basketState={basketState} />} />
+        <Route exact path="/checkout" component={
+          () => <Checkout
+            basketState={basketState}
+            setBasketState={setBasketState}
+            setOrderState={setOrderState}
+          />
+        } />
         <Route exact path="/login" component={
           ({ history }) => <LoginPage
             setUserInfo={setUserInfo}
