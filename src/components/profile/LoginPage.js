@@ -20,8 +20,10 @@ const LoginPage = ({ setUserInfo, history }) => {
     }}>
       <h1 className="text-3xl font-bold mb-4">Login</h1>
       <p className="text-red-500 mb-2">{error.length > 0 && error}</p>
-      <input type="text" placeholder="Email" autoComplete="username" className="p-2 border-2 mb-2 rounded font-semibold" />
-      <input type="password" placeholder="Password" autoComplete="current-password" className="p-2 border-2 mb-2 rounded font-semibold" />
+      <label htmlFor="email">Email</label>
+      <input type="text" id="email" autoComplete="username" className="p-2 border-2 mb-2 rounded font-semibold" />
+      <label htmlFor="password">Password</label>
+      <input type="password" id="password" autoComplete="current-password" className="p-2 border-2 mb-2 rounded font-semibold" />
       <button className="p-2 bg-green-400 hover:bg-green-500 rounded font-semibold">Login</button>
     </form>
   )
