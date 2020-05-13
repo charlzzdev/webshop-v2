@@ -85,7 +85,7 @@ const Products = ({ match, history }) => {
               </div>
               <div className="px-6 py-4">
                 <div className="font-bold text-xl mb-2">{product.name}</div>
-                <p className="text-gray-700 text-base truncate">
+                <p className="text-gray-700 text-base truncate" style={{ maxWidth: '250px' }}>
                   {product.description}
                 </p>
               </div>
