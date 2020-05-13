@@ -74,14 +74,18 @@ const Products = ({ match, history }) => {
       <div className="flex flex-wrap justify-center relative mt-8">
         {
           sortedItems.map(product => (
-            <Link to={`/products/view/${product.id}`} key={product.id} className="max-w-sm m-3 rounded overflow-hidden shadow-lg">
+            <Link
+              to={`/products/view/${product.id}`}
+              key={product.id}
+              className="max-w-sm sm:w-64 m-3 rounded overflow-hidden shadow-lg"
+            >
               <div className="overflow-hidden" style={{ width: '300px', height: '200px' }}>
                 {!images[product.id] && <LoadingSpinner />}
                 <img src={images[product.id]} alt={product.name} />
               </div>
               <div className="px-6 py-4">
                 <div className="font-bold text-xl mb-2">{product.name}</div>
-                <p className="text-gray-700 text-base">
+                <p className="text-gray-700 text-base truncate">
                   {product.description}
                 </p>
               </div>
