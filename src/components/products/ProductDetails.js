@@ -110,13 +110,17 @@ const ProductDetails = ({ match, history, basketState, setBasketState }) => {
         </div>
       </div>
 
-      <h1 className="text-6xl font-extrabold text-center my-16 text-gray-800">
+      <h1 className="text-4xl sm:text-6xl font-extrabold text-center my-16 text-gray-800">
         <span className="bg-red-200 px-4 rounded">Similar</span> products
       </h1>
       {
         similarItems.map(item => (
           item.id !== product.id && (
-            <Link to={`/products/view/${item.id}`} key={item.id} className="block w-1/3 mx-auto bg-gray-100 mb-2 p-4 rounded">
+            <Link
+              to={`/products/view/${item.id}`}
+              key={item.id}
+              className="block max-w-xl mx-auto bg-gray-100 mb-2 p-4 rounded"
+            >
               <h2 className="text-2xl font-bold">{item.name}</h2>
               <h3 className="text-sm text-gray-800">${item.price}</h3>
               <h4>{item.description}</h4>
